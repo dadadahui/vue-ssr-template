@@ -19,3 +19,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+#app {
+  background: grey;
+  h1 {
+    color: red;
+  }
+}
+</style>
