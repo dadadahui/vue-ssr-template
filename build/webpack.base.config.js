@@ -2,6 +2,10 @@ const path = require('path')
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
+function resolve(dir) {
+  return path.join(__dirname, '..', dir)
+}
+
 module.exports = {
   devtool: '#cheap-module-source-map',
   output: {
@@ -11,8 +15,10 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'public': path.resolve(__dirname, '../public'),
-      'components': path.resolve(__dirname, '../components')
+      '@': resolve('src'),
+      'static': resolve('static'),
+      'assets': resolve('src/assets'),
+      'common': resolve('src/common')
     },
     extensions: ['.js', '.vue']
   },
@@ -27,12 +33,32 @@ module.exports = {
       {
         test: /\.js$/,
         use: 'babel-loader',
-        exclude: /node_modules/
+        exclude: [/node_modules/]
       },
-      { 
+      {
         test: /.scss$/,
-        loaders: ["style-loader", "css-loader", "sass-loader"]
-      }
+        loaders: ["vue-style-loader", "css-loader", "postcss-loader", "sass-loader"]
+      },
+      {
+        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: path.posix.join('static', 'fonts/[name].[hash:7].[ext]')
+        }
+      },
+      {
+        test: /.css$/,
+        loaders: ["css-loader", "postcss-loader"]
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: path.posix.join('static', 'img/[name].[hash:7].[ext]')
+        }
+      },
     ]
   },
   performance: {

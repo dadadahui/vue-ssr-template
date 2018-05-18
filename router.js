@@ -6,21 +6,69 @@
 
 import Vue from 'vue'
 import Router from 'vue-router'
-
-import Bar from './components/Bar.vue'
-import Baz from './components/Baz.vue'
-import Foo from './components/Foo.vue'
-import Item from './components/Item.vue'
+const Home = () => import('@/components/home/home')
+const LoginORregister = () => import('@/components/loginorregister/loginorregister')
+const LoginPanel = () => import('@/components/base/logregpwdpanel/loginpanel/loginpanel')
+const RegisterPanel = () => import('@/components/base/logregpwdpanel/registerpanel/registerpanel')
+const SendEmailPanel = () => import('@/components/base/logregpwdpanel/sendemailpanel/sendemailpanel')
+const SendVCodePanel = () => import('@/components/base/logregpwdpanel/sendvcodepanel/sendvcodepanel')
+const NewPwdPanel = () => import('@/components/base/logregpwdpanel/newpwdpanel/newpwdpanel')
+const Recommends = () => import('@/components/base/recommends/recommends')
+const Article = () => import('@/components/article/article')
+const User = () => import('@/components/user/user')
+const Profile = () => import('@/components/profile/profile')
+const ChangeImg = () => import('@/components/changeuserimg/changeuserimg')
 Vue.use(Router)
 
 export const createRouter = () => {
   return new Router({
     mode: 'history',
+    base: '/',
     routes: [
-      { path: '/item/:id', component: Item },
-      { path: '/bar', component: Bar },
-      { path: '/baz', component: Baz },
-      { path: '/foo', component: Foo }
-    ]
+      {
+        path: '/',
+        name: 'Home',
+        component: Home,
+        redirect: '/homepage',
+        children: [
+          {
+            path: 'homepage',
+            component: Recommends
+          },
+          {
+            path: 'article/:id',
+            name: 'Article',
+            component: Article
+          },
+        ]
+      },
+      {
+        path: '/user',
+        name: 'user',
+        component: User,
+        meta: { requiresAuth: true },
+        redirect: '/user/profile',
+        children: [
+          { path: 'profile', name: 'profilepanel', component: Profile, meta: { requiresAuth: true } },
+          { path: 'changeimg', name: 'changeimg', component: ChangeImg, meta: { requiresAuth: true } }
+        ]
+      },
+      {
+        path: '/loginORregister',
+        component: LoginORregister,
+        name: 'LoginORregister',
+        redirect: '/loginORregister/login',
+        children: [
+          { path: 'login', name: 'loginpanel', component: LoginPanel },
+          { path: 'register', name: 'registerpanel', component: RegisterPanel },
+          { path: 'sendemail', name: 'sendemailpanel', component: SendEmailPanel },
+          { path: 'sendvcode', name: 'sendvcodepanel', component: SendVCodePanel },
+          { path: 'newpwd', name: 'newpwdpanel', component: NewPwdPanel },
+        ]
+      }
+    ],
+    scrollBehavior(to, from, savedPosition) {
+      return { x: 0, y: 0 }
+    }
   })
 }
