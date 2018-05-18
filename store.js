@@ -6,7 +6,6 @@
 
 import Vue from 'vue'
 import Vuex from 'vuex'
-
 Vue.use(Vuex)
 
 import { fetchItem } from './api'
@@ -14,18 +13,18 @@ import { fetchItem } from './api'
 export const createStore = () => {
   return new Vuex.Store({
     state: {
-      items: {}
+      recommends: []
     },
     actions: {
-      fetchItem ({ commit }, id) {
-        return fetchItem(id).then(item => {
-          commit('setItem', { id, item })
+      fetchItem ({ commit }, page) {
+        return fetchItem(page).then(payload => {
+          commit('setRecommends', payload)
         })
       }
     },
     mutations: {
-      setItem (state, { id, item }) {
-        Vue.set(state.items, id, item)
+      setRecommends (state, payload) {
+        state.recommends = payload
       }
     }
   })

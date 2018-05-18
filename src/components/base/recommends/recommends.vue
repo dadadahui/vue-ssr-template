@@ -1,7 +1,7 @@
 <template>
   <div class="main-container">
     <div class="container-recommend">
-      <div class="recommend" v-if="isLoaded" v-for="d in rec" :key="d.key">
+      <div class="recommend" v-if="true" v-for="d in item" :key="d.key">
         <recommend :data="d"></recommend>
       </div>
       <loading v-else></loading>
@@ -29,6 +29,17 @@ export default {
     Category,
     Loading
   },
+    asyncData ({ store, route }) {
+    // 触发 action 后，会返回 Promise
+    return store.dispatch('fetchItem', 1)
+  },
+  computed: {
+    // 从 store 的 state 对象中的获取 item。
+    item () {
+      console.log(this.$store.state.recommends)
+      return JSON.parse(this.$store.state.recommends)
+    }
+  },
   data() {
     return {
       rec: [],
@@ -41,11 +52,7 @@ export default {
       onceFn: undefined
     };
   },
-  created() {
-    this._getRecommendByTypes(-1, this.currentPage);
-    this._getCategory();
-    this._getRecommendsCount();
-  },
+  created() {},
   methods: {
     selectCategory(c) {
       if (c.cid === this.currentIndex) {
@@ -93,17 +100,20 @@ export default {
     }
   },
   mounted() {
+    // this._getRecommendByTypes(-1, this.currentPage);
+    // this._getCategory();
+    // this._getRecommendsCount();
     // window.addEventListener("scroll", () => {
     //   if (isBottom()) {
     //     this.onceFn();
     //   }
     // });
   },
-  computed: {
-    isFullTxt() {
-      return this._checkIsFull() ? '已经到底了，别扯了' : '加载中...';
-    }
-  }
+  // computed: {
+  //   isFullTxt() {
+  //     return this._checkIsFull() ? "已经到底了，别扯了" : "加载中...";
+  //   }
+  // }
 };
 </script>
 

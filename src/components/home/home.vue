@@ -2,7 +2,7 @@
   <div>
     <main-header></main-header>
     <tech></tech>
-    <!-- <router-view></router-view> -->
+    <router-view></router-view>
   </div>
 </template>
 
