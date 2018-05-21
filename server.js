@@ -3,7 +3,6 @@ const serverBundle = require('./dist/vue-ssr-server-bundle.json')
 const clientManifest = require('./dist/vue-ssr-client-manifest.json')
 const fs = require('fs')
 const path = require('path')
-// var mongoose = require('mongoose');
 const Koa = require('koa')
 const KoaRuoter = require('koa-router')
 const serve = require('koa-static')
@@ -57,12 +56,7 @@ router.get('*', (ctx, next) => {
 
 app.use(router.routes()).use(router.allowedMethods())
 
-const port = 8080
-app.listen(port, '127.0.0.1', () => {
+const port = 8090
+app.listen(port, () => {
     console.log(`server running at localhost:${port}`)
 })
-
-// var url = "mongodb://127.0.0.1:27017";
-// // var url = "mongodb://172.17.210.7:27017";
-// mongoose.Promise = global.Promise;
-// mongoose.connect(url, { useMongoClient: true });

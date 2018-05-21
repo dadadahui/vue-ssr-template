@@ -11,14 +11,14 @@ import App from './App.vue'
 import { createRouter } from './router'
 import { createStore } from './store'
 import { sync } from 'vuex-router-sync'
-import Snotify from 'vue-snotify';
+// import Snotify from 'vue-snotify';
 import 'font-awesome/css/font-awesome.css';
-import { Select, DatePicker, Option } from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
-Vue.use(Select);
-Vue.use(DatePicker);
-Vue.use(Option);
-Vue.use(Snotify);
+// import { Select, DatePicker, Option } from 'element-ui';
+// import 'element-ui/lib/theme-chalk/index.css';
+// Vue.use(Select);
+// Vue.use(DatePicker);
+// Vue.use(Option);
+// Vue.use(Snotify);
 // 导出一个工厂函数，用于创建新的
 // 应用程序、router 和 store 实例
 

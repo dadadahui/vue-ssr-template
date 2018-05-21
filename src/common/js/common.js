@@ -144,10 +144,10 @@ function getWindowHeight() {
 }
 
 function isBottom() {
-    // if (getScrollTop() + getWindowHeight() > getScrollHeight() * 0.9) {
-    //     return true;
-    // }
-    // return false;
+    if (getScrollTop() + getWindowHeight() > getScrollHeight() * 0.9) {
+        return true;
+    }
+    return false;
 };
 
 export const SERVER_UPLOADS = 'http://api.rozwel.club/api/uploads';

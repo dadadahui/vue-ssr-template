@@ -4,7 +4,7 @@
     <div class="title">{{article.title}}</div>
     <div class="status">
       <div class="author">{{article.author}}</div>
-      <div class="create_dt">{{article.create_dt}}</div>
+      <div class="create_dt">{{mongoTimeFormat(article.create_dt)}}</div>
     </div>
     <hr/>
     <div class="content" v-html="article.content"></div>
@@ -23,16 +23,20 @@ export default {
   },
   data() {
     return {
-      article: "",
-      isLoading: false
+      isLoading: true
     };
   },
-  created() {
-    getRecommend(this.$route.params.id).then(res => {
-      this.article = res.data;
-      this.article.create_dt = mongoTimeFormat(this.article.create_dt);
-      this.isLoading = true;
-    });
+  asyncData({ store, route }) {
+    // 触发 action 后，会返回 Promise
+    return store.dispatch("getRecommend", route.params.id);
+  },
+  computed: {
+    article() {
+      return this.$store.state.recommend
+    }
+  },
+  methods: {
+    mongoTimeFormat
   }
 };
 </script>

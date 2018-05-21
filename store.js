@@ -6,26 +6,80 @@
 
 import Vue from 'vue'
 import Vuex from 'vuex'
+import Promise from 'promise'
 Vue.use(Vuex)
 
-import { fetchItem } from './api'
+import {
+  getRecommends,
+  getRecommend,
+  getRecommendByTypes,
+  getRecommendTypesCount,
+  getRecommendsCount
+} from './src/api/recommend/recommend'
 
 export const createStore = () => {
   return new Vuex.Store({
     state: {
-      recommends: []
+      recommends: [],
+      recommend: [],
+      count: 0,
+      typesCount: 0,
+      typeRecommend: [],
+      category: []
     },
     actions: {
-      fetchItem ({ commit }, page) {
-        return fetchItem(page).then(payload => {
-          commit('setRecommends', payload)
+      getHomepageData(store, page) {
+        return Promise.all([
+          store.dispatch('getRecommends', page),
+          store.dispatch('getRecommendTypesCount'),
+          store.dispatch('getRecommendsCount')
+        ])
+      },
+      getRecommends({ commit }, page) {
+        return getRecommends(page).then(payload => {
+          commit('setRecommends', payload.data)
+        })
+      },
+      getRecommend({ commit }, id) {
+        return getRecommend(id).then(payload => {
+          commit('setRecommend', payload.data)
+        })
+      },
+      getRecommendByTypes({ commit }, type, page) {
+        return getRecommendByTypes(type, page).then(payload => {
+          commit('setRecommends', payload.data)
+        })
+      },
+      getRecommendTypesCount({ commit }) {
+        return getRecommendTypesCount().then(payload => {
+          commit('setCategory', payload.data)
+        })
+      },
+      getRecommendsCount({ commit }) {
+        return getRecommendsCount().then(payload => {
+          commit('setRecommendsCount', payload.data)
         })
       }
     },
     mutations: {
-      setRecommends (state, payload) {
+      setRecommends(state, payload) {
         state.recommends = payload
-      }
+      },
+      appendRecommends(state, payload) {
+        state.recommends.push(...payload)
+      },
+      resetRecommends(state) {
+        state.recommends = []
+      },
+      setRecommend(state, payload) {
+        state.recommend = payload
+      },
+      setCategory(state, payload) {
+        state.category = payload
+      },
+      setRecommendsCount(state, payload) {
+        state.count = payload
+      },
     }
   })
 }

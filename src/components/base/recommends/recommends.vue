@@ -1,7 +1,7 @@
 <template>
   <div class="main-container">
     <div class="container-recommend">
-      <div class="recommend" v-if="true" v-for="d in item" :key="d.key">
+      <div class="recommend" v-if="item" v-for="d in item" :key="d.key">
         <recommend :data="d"></recommend>
       </div>
       <loading v-else></loading>
@@ -29,30 +29,34 @@ export default {
     Category,
     Loading
   },
-    asyncData ({ store, route }) {
+  asyncData({ store, route }) {
     // 触发 action 后，会返回 Promise
-    return store.dispatch('fetchItem', 1)
+    return store.dispatch("getHomepageData", this.currentPage);
   },
   computed: {
     // 从 store 的 state 对象中的获取 item。
-    item () {
-      console.log(this.$store.state.recommends)
-      return JSON.parse(this.$store.state.recommends)
+    item() {
+      return this.$store.state.recommends;
+    },
+    category() {
+      return this.$store.state.category;
+    },
+    isFullTxt() {
+      return this._checkIsFull() ? "已经到底了，别扯了" : "加载中...";
+    },
+    recommendsCount() {
+      return this.$store.state.count;
     }
   },
   data() {
     return {
-      rec: [],
-      category: [],
       isLogined: false,
       isLoaded: false,
       currentIndex: -1,
       currentPage: 1,
-      recommendsCount: 0,
       onceFn: undefined
     };
   },
-  created() {},
   methods: {
     selectCategory(c) {
       if (c.cid === this.currentIndex) {
@@ -61,11 +65,11 @@ export default {
       this.currentIndex = c.cid;
       this.isLoaded = false;
       this.currentPage = 1;
-      this.rec = [];
+      this.$store.commit("resetRecommends");
       if (c.cid === -1) {
         this._getRecommendByTypes(-1, this.currentPage);
       } else {
-        this.recommendsCount = c.count;
+        this.$store.commit('setRecommendsCount', c.count);
         this._getRecommendByTypes(c.cid, this.currentPage);
       }
     },
@@ -74,7 +78,7 @@ export default {
         return;
       }
       getRecommendByTypes(type, page).then(res => {
-        this.rec.push(...res.data);
+        this.$store.commit("appendRecommends", res.data);
         this.isLoaded = true;
         this.currentPage++;
         this.onceFn = once(() => {
@@ -82,38 +86,28 @@ export default {
         });
       });
     },
-    _getCategory() {
-      getRecommendTypesCount().then(res => {
-        this.category = res.data;
-      });
-    },
-    _getRecommendsCount() {
-      getRecommendsCount().then(res => {
-        this.recommendsCount = res.data;
-      });
-    },
     _checkIsFull() {
-      if (this.rec.length === this.recommendsCount && this.rec.length !== 0) {
+      console.log(this.recommendsCount, this.item.length)
+      if (
+        this.item.length === this.recommendsCount &&
+        this.item.length !== 0
+      ) {
         return true;
       }
       return false;
     }
   },
   mounted() {
-    // this._getRecommendByTypes(-1, this.currentPage);
-    // this._getCategory();
-    // this._getRecommendsCount();
-    // window.addEventListener("scroll", () => {
-    //   if (isBottom()) {
-    //     this.onceFn();
-    //   }
-    // });
-  },
-  // computed: {
-  //   isFullTxt() {
-  //     return this._checkIsFull() ? "已经到底了，别扯了" : "加载中...";
-  //   }
-  // }
+
+    this.onceFn = once(() => {
+      this._getRecommendByTypes(-1, ++this.currentPage);
+    });
+    window.addEventListener("scroll", () => {
+      if (isBottom()) {
+        this.onceFn();
+      }
+    });
+  }
 };
 </script>
 

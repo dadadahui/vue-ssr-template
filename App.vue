@@ -15,51 +15,51 @@
 </template>
 
 <script>
-import { SnotifyPosition } from "vue-snotify";
+// import { SnotifyPosition } from "vue-snotify";
 export default {
   data() {
-    return {
-      style: "material",
-      timeout: 1700,
-      position: SnotifyPosition.rightBottom,
-      progressBar: true,
-      closeClick: true,
-      newTop: true,
-      backdrop: -1,
-      dockMax: 6,
-      blockMax: 3,
-      pauseHover: true,
-      maxHeight: 300,
-      titleMaxLength: 15,
-      bodyMaxLength: 80
-    };
+    // return {
+    //   style: "material",
+    //   timeout: 1700,
+    //   position: SnotifyPosition.rightBottom,
+    //   progressBar: true,
+    //   closeClick: true,
+    //   newTop: true,
+    //   backdrop: -1,
+    //   dockMax: 6,
+    //   blockMax: 3,
+    //   pauseHover: true,
+    //   maxHeight: 300,
+    //   titleMaxLength: 15,
+    //   bodyMaxLength: 80
+    // };
   },
   methods: {
-    setGlobal() {
-      this.$snotify.setConfig(
-        {
-          bodyMaxLength: this.bodyMaxLength,
-          titleMaxLength: this.titleMaxLength,
-          backdrop: this.backdrop
-        },
-        {
-          newOnTop: this.newTop,
-          position: this.position,
-          maxOnScreen: this.dockMax,
-          maxAtPosition: this.blockMax,
-          maxHeight: this.maxHeight
-        },
-        {
-          timeout: this.timeout,
-          showProgressBar: this.progressBar,
-          closeOnClick: this.closeClick,
-          pauseOnHover: this.pauseHover
-        }
-      );
-    }
+    // setGlobal() {
+    //   this.$snotify.setConfig(
+    //     {
+    //       bodyMaxLength: this.bodyMaxLength,
+    //       titleMaxLength: this.titleMaxLength,
+    //       backdrop: this.backdrop
+    //     },
+    //     {
+    //       newOnTop: this.newTop,
+    //       position: this.position,
+    //       maxOnScreen: this.dockMax,
+    //       maxAtPosition: this.blockMax,
+    //       maxHeight: this.maxHeight
+    //     },
+    //     {
+    //       timeout: this.timeout,
+    //       showProgressBar: this.progressBar,
+    //       closeOnClick: this.closeClick,
+    //       pauseOnHover: this.pauseHover
+    //     }
+    //   );
+    // }
   },
   mounted() {
-    this.setGlobal();
+    // this.setGlobal();
   }
 };
 </script>
