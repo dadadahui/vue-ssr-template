@@ -6,7 +6,6 @@ function resolve(dir) {
 }
 
 module.exports = {
-  devtool: '#cheap-module-source-map',
   output: {
     path: path.resolve(__dirname, '../dist'),
     publicPath: '/',
