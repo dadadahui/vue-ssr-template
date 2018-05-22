@@ -25,7 +25,11 @@ module.exports = {
       {
         test: /\.vue$/,
         use: {
-          loader: 'vue-loader'
+          loader: 'vue-loader',
+          options: {
+            // enable CSS extraction
+            extractCSS: true
+          }
         }
       },
       {

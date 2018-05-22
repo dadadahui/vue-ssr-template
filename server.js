@@ -18,7 +18,12 @@ const renderer = createBundleRenderer(serverBundle, {
   // （可选）页面模板
   template, 
   // （可选）客户端构建 manifest
-  clientManifest 
+  clientManifest,
+  shouldPrefetch: (file, type) => {
+    if(type === 'script') {
+      return false
+    }
+  }
 })
 
 app.use(serve(path.resolve(__dirname, './dist')))
@@ -38,7 +43,6 @@ router.get('*', (ctx, next) => {
       }
       resolve()
     }
-    console.log(ctx.url)
     const context = { url: ctx.url, title: 'Vue SSR' }
   
     // 这里无需传入一个应用程序，因为在执行 bundle 时已经自动创建过。
