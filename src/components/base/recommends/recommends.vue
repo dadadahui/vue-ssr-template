@@ -87,7 +87,6 @@ export default {
       });
     },
     _checkIsFull() {
-      console.log(this.recommendsCount, this.item.length)
       if (
         this.item.length === this.recommendsCount &&
         this.item.length !== 0
@@ -95,15 +94,17 @@ export default {
         return true;
       }
       return false;
+    },
+    _checkIsHomePage() {
+      return /homepage/.test(this.$route.path)
     }
   },
   mounted() {
-
     this.onceFn = once(() => {
       this._getRecommendByTypes(-1, ++this.currentPage);
     });
     window.addEventListener("scroll", () => {
-      if (isBottom()) {
+      if (isBottom() && this._checkIsHomePage()) {
         this.onceFn();
       }
     });
